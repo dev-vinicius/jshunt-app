@@ -29,24 +29,68 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
         title: Text(widget.title),
         centerTitle: true,
       ),
+      backgroundColor: Color(0xfffafafa),
       body: Observer(
         builder: (_) {
           return _homeController.products == null
               ? Center(
                   child: CircularProgressIndicator(),
                 )
-              : ListView.builder(
-                  itemCount: _homeController.products.length,
-                  itemBuilder: (context, index) {
-                    final Product product = _homeController.products[index];
-                    return ListTile(
-                      title: Text(product.title),
-                      subtitle: Text(product.description),
-                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                    );
-                  },
+              : Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: RefreshIndicator(
+                    child: ListView.builder(
+                      itemCount: _homeController.products.length,
+                      itemBuilder: (context, index) {
+                        final Product product = _homeController.products[index];
+                        return getProductItem(product);
+                      },
+                    ),
+                    onRefresh: () async {
+                      await _homeController.getProducts();
+                    },
+                  ),
                 );
         },
+      ),
+    );
+  }
+
+  Widget getProductItem(Product product) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 10),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                leading: Icon(Icons.album),
+                title: Text(product.title),
+                subtitle: Text(product.description),
+              ),
+              Container(
+                margin: const EdgeInsetsDirectional.only(bottom: 20, top: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                width: double.infinity,
+                child: RaisedButton(
+                  color: Color(0xffda552f),
+                  onPressed: () {
+                    Modular.to.pushNamed('/product/${product.id}');
+                  },
+                  child: const Text(
+                    'Acessar',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

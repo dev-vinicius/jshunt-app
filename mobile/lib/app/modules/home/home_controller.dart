@@ -16,6 +16,7 @@ abstract class _HomeControllerBase with Store {
 
   @action
   Future<void> getProducts() async {
+    this.products = null;
     this.products = await _productService.getPoducts();
   }
 

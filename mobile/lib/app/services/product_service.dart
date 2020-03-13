@@ -14,4 +14,12 @@ class ProductService {
       return Product.fromJson(product);
     }).toList();
   }
+
+  Future<Product> getProductById(String id) async {
+    var response = await http.get('$baseUrl/products/$id');
+    var data = json.decode(response.body);
+
+    return Product.fromJson(data);
+  }
+
 }

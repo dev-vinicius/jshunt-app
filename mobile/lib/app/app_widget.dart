@@ -8,8 +8,10 @@ class AppWidget extends StatelessWidget {
       navigatorKey: Modular.navigatorKey,
       title: 'HuntApp',
       theme: ThemeData(
-        primarySwatch: Colors.red,
+        primaryColor: Color(0xffda552f),
+        accentColor: Color(0xffda552f),
       ),
+      debugShowCheckedModeBanner: false,
       initialRoute: '/',
       onGenerateRoute: Modular.generateRoute,
     );
